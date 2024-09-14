@@ -24,7 +24,7 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container mt-5">
+    <div className="register-container">
       <Card style={{ width: '30rem' }} className='register-card'>
       <h2 className='heading'>Register</h2>
       <Formik

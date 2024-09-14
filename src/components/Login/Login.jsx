@@ -10,20 +10,32 @@ import './Login.css';
 
 
 const Login = () => {
+  // Accessing the loginUser function from AuthContext
   const { loginUser } = useContext(AuthContext);
+
+  // Local state to manage error messages
   const [error, setError] = useState('');
+
+  //navigation in React Router
   const navigate = useNavigate();
 
+  // Form validation schema using Yup
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email format').required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
 
+  // Function to handle form submission
   const handleSubmit = (values) => {
+    // Check if the login credentials are valid
     const isValid = loginUser(values);
+
+    // If invalid credentials, show an error message
     if (!isValid) {
       setError('Invalid email or password');
     } else {
+
+      // If login is successful, show an alert and navigate to the todo list page
       alert('Login successful!');
       navigate('/todolist'); 
       
@@ -31,8 +43,7 @@ const Login = () => {
   };
 
   return (
-    <div className='container-fluid' >
-      
+    <div className="container-fluid" >
       <Card style={{ width: '30rem' }} className='card'>
       <h2 className='heading'>Login</h2>
       <Formik
