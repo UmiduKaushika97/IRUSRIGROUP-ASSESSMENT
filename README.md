@@ -28,6 +28,7 @@ Clone the repository: git clone https://github.com/UmiduKaushika97/IRUSRIGROUP-A
 Navigate to the project directory: cd IRUSRIGROUP-ASSESSMENT
 
 Install the dependencies: npm install
+
 Run the application: npm start
 
 The app should now be running on http://localhost:3000.
