@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import Navigation from '../Navbar/Navbar';
 
 const Dashboard = () => {
+  // managing the todos list
   const [todos, setTodos] = useState([]);
+  // State for the todo currently edit
   const [editTodo, setEditTodo] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState('add'); // 'add' 'edit' popup
@@ -25,10 +27,10 @@ const Dashboard = () => {
 
   // Load todos from local storage 
   useEffect(() => {
-    const storedTodos = localStorage.getItem('todos');
+    const storedTodos = localStorage.getItem('todos'); // Retrieve todos from local storage
     if (storedTodos) {
       try {
-        setTodos(JSON.parse(storedTodos));
+        setTodos(JSON.parse(storedTodos)); // Parse and set the todos in state if available
       } catch (error) {
         console.error('Failed to parse todos from local storage:', error);
         setTodos([]); // Fallback to empty array if parsing fails
@@ -39,33 +41,42 @@ const Dashboard = () => {
   // Save todos to local storage 
   useEffect(() => {
     if (todos.length > 0) {
-      localStorage.setItem('todos', JSON.stringify(todos));
+      localStorage.setItem('todos', JSON.stringify(todos)); // Save todos to local storage as a JSON string
     }
   }, [todos]);
 
+  // Function to handle adding a new todo
   const handleAddTodo = (values) => {
+    // Add new todo to the state and set a unique id and default completion status
     setTodos([...todos, { ...values, id: Date.now(), completed: false }]);
     setShowModal(false);
   };
 
+  // Function to handle editing an existing todo
   const handleEditTodo = (values) => {
+    // Update the todo in the state by mapping over the todos array and replacing the edited todo
     setTodos(todos.map((todo) => (todo.id === editTodo.id ? { ...editTodo, ...values } : todo)));
-    setEditTodo(null);
+    setEditTodo(null); // Clear the editTodo state
     setShowModal(false);
   };
 
+  // Function to handle deleting a todo
   const handleDeleteTodo = (id) => {
+    // Filter out the deleted todo from the todos state
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  // Function to toggle the completion status of a todo
   const handleToggleCompletion = (id) => {
+    // Toggle the completed status of the todo in the todos state
     setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
   };
 
+  // Function to show the modal for adding or editing a todo
   const handleShowModal = (todo = null, mode = 'add') => {
-    setEditTodo(todo);
-    setModalMode(mode);
-    setShowModal(true);
+    setEditTodo(todo); // Set the todo to be edited
+    setModalMode(mode); // Set the mode of the modal add
+    setShowModal(true); // Show the modal
   };
 
   return (
@@ -117,19 +128,21 @@ const Dashboard = () => {
         ))}
       </Row>
 
+    {/* Modal for adding or editing a todo */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{modalMode === 'add' ? 'Add Todo' : 'Edit Todo'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {/* Formik form for adding or editing a todo */}
           <Formik
             initialValues={
               modalMode === 'add'
-                ? { title: '', description: '' }
-                : { title: editTodo?.title || '', description: editTodo?.description || '' }
+                ? { title: '', description: '' } // Initial values for adding a todo
+                : { title: editTodo?.title || '', description: editTodo?.description || '' } // Initial values for editing a todo
             }
-            validationSchema={todoValidationSchema}
-            onSubmit={modalMode === 'add' ? handleAddTodo : handleEditTodo}
+            validationSchema={todoValidationSchema} // Validation schema for form validation
+            onSubmit={modalMode === 'add' ? handleAddTodo : handleEditTodo} // Form submission handler
           >
             {({ handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
