@@ -46,10 +46,12 @@ const Login = () => {
     <div className="container-fluid" >
       <Card style={{ width: '30rem' }} className='card'>
       <h2 className='heading'>Login</h2>
+
+      {/* Formik component for handling form state and validation */}
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        initialValues={{ email: '', password: '' }} // Initial values for the form 
+        validationSchema={validationSchema}  //Applying the validation schema 
+        onSubmit={handleSubmit} //Form submission handler 
       >
         {({ errors, touched }) => (
             
@@ -57,8 +59,8 @@ const Login = () => {
             
             <BootstrapForm.Group>
               <BootstrapForm.Label>Email</BootstrapForm.Label>
-              <Field name="email" type="email" className="form-control" />
-              <ErrorMessage name="email" component="div" className="text-danger" />
+              <Field name="email" type="email" className="form-control" /> {/* Formik Field for password  */}
+              <ErrorMessage name="email" component="div" className="text-danger" /> {/* Display password validation error */}
             </BootstrapForm.Group>
 
             <BootstrapForm.Group>

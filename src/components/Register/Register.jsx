@@ -8,18 +8,19 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const { registerUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { registerUser } = useContext(AuthContext);// Get the registerUser function from AuthContext
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
-  const validationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({ // Define Yup validation schema for form fields
     name: Yup.string().required('Name is required'),
     email: Yup.string().email('Invalid email format').required('Email is required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
   });
 
+  // Function to handle form submission
   const handleSubmit = (values) => {
-    registerUser(values);
-    navigate('/'); 
+    registerUser(values); // Call the registerUser function with form values
+    navigate('/');  // Redirect user to the homepage after successful registration
     alert('Registration successful!');
   };
 
@@ -27,13 +28,15 @@ const Register = () => {
     <div className="register-container">
       <Card style={{ width: '30rem' }} className='register-card'>
       <h2 className='heading'>Register</h2>
+
+      {/* Formik component for managing form state, validation, and submission */}
       <Formik
-        initialValues={{ name: '', email: '', password: '' }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        initialValues={{ name: '', email: '', password: '' }} // Initial form values
+        validationSchema={validationSchema} // Validation schema for the form
+        onSubmit={handleSubmit} // Function to handle form submission
       >
-        {({ errors, touched }) => (
-          <Form>
+        {({ errors, touched }) => ( // Destructure errors and touched from Formik
+          <Form> {/* Form component formik */}
             <BootstrapForm.Group>
               <BootstrapForm.Label>Name</BootstrapForm.Label>
               <Field name="name" className="form-control" />
